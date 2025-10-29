@@ -12,27 +12,41 @@ import { useNavigate } from "react-router-dom"
 export default function SignUpPage() {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+  const [error, setError] = useState("")
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setError("")
+
+    // Validate passwords match
+    if (password !== confirmPassword) {
+      setError("Passwords do not match")
+      return
+    }
+
     setIsLoading(true)
 
     // Simulate account creation
     await new Promise((resolve) => setTimeout(resolve, 1000))
 
     // Redirect to home page
-    navigate("/")
+    navigate("/app")
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
+    <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 font-bold text-2xl mb-2">
             <Calendar className="h-8 w-8 text-primary" />
             <span>OpenInvite</span>
           </Link>
-          <p className="text-muted-foreground">Create an account to start sharing events</p>
+          <p className="text-muted-foreground text-sm">Create an account to start sharing events</p>
         </div>
 
         <Card>
@@ -42,9 +56,34 @@ export default function SignUpPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
-                <Input id="name" name="name" type="text" placeholder="John Doe" required autoComplete="name" />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName">First Name</Label>
+                  <Input
+                    id="firstName"
+                    name="firstName"
+                    type="text"
+                    placeholder="John"
+                    required
+                    autoComplete="given-name"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="lastName">Last Name</Label>
+                  <Input
+                    id="lastName"
+                    name="lastName"
+                    type="text"
+                    placeholder="Doe"
+                    required
+                    autoComplete="family-name"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -56,6 +95,8 @@ export default function SignUpPage() {
                   placeholder="you@example.com"
                   required
                   autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
 
@@ -69,6 +110,8 @@ export default function SignUpPage() {
                   required
                   autoComplete="new-password"
                   minLength={8}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <p className="text-xs text-muted-foreground">Must be at least 8 characters long</p>
               </div>
@@ -83,16 +126,24 @@ export default function SignUpPage() {
                   required
                   autoComplete="new-password"
                   minLength={8}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                 />
               </div>
+
+              {error && (
+                <div className="p-3 text-sm text-red-500 bg-red-50 border border-red-200 rounded-md">
+                  {error}
+                </div>
+              )}
 
               <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
                 {isLoading ? "Creating account..." : "Create Account"}
               </Button>
             </form>
           </CardContent>
-          <CardFooter className="flex-col gap-4">
-            <div className="text-sm text-center text-muted-foreground">
+          <CardFooter>
+            <div className="text-sm text-center w-full text-muted-foreground">
               Already have an account?{" "}
               <Link to="/login" className="text-primary font-medium hover:underline">
                 Sign in

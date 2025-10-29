@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Layout } from './components/Layout';
+import LandingPage from './pages/LandingPage';
 import HomePage from './pages/HomePage';
 import CreateEvent from './pages/CreateEvent';
 import EventDetail from './pages/EventDetail';
@@ -16,7 +17,8 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Layout><HomePage /></Layout>} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/app" element={<Layout><HomePage /></Layout>} />
           <Route path="/create" element={<Layout><CreateEvent /></Layout>} />
           <Route path="/events/:id" element={<Layout><EventDetail /></Layout>} />
           <Route path="/login" element={<Layout><Login /></Layout>} />
