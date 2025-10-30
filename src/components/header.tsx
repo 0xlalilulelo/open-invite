@@ -17,8 +17,8 @@ export function Header() {
 
         {/* Desktop Navigation - Hidden on Mobile */}
         <nav className="hidden md:flex items-center gap-4">
-          <Link to="/">
-            <Button variant={isActive("/") ? "default" : "ghost"}>Events</Button>
+          <Link to="/home">
+            <Button variant={isActive("/home") ? "default" : "ghost"}>Events</Button>
           </Link>
           <Link to="/map">
             <Button variant={isActive("/map") ? "default" : "ghost"}>
